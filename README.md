@@ -1,6 +1,6 @@
-# Noyan Desktop
+# Mina Desktop
 
-![Noyan Desktop](docs/screenshot.png)
+![Mina Desktop](docs/screenshot.png)
 <sub>Screenshot uses a demo vault and fake bot data.</sub>
 
 I use Claude Code inside an Obsidian vault that works as my notes and memory. I wanted it in its own window instead of a terminal, so I built this Electron app on top of the Claude Agent SDK.
@@ -19,8 +19,8 @@ You need Claude Code installed and logged in.
 
 ```bash
 npm install
-set NOYAN_VAULT=C:\path\to\vault          # defaults to ~/Vault
-set NOYAN_BOT_DIR=C:\path\to\bot_panel    # optional, folder with export_payload.py
+set MINA_VAULT=C:\path\to\vault          # defaults to ~/Vault
+set MINA_BOT_DIR=C:\path\to\bot_panel    # optional, folder with export_payload.py
 npm start
 ```
 

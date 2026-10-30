@@ -11,7 +11,7 @@
   const pretty = (s) => s.replace(/[-_]/g, ' ');
 
   function load() {
-    loading ??= window.noyan.skills()
+    loading ??= window.mina.skills()
       .then((list) => { skills = list; render(); })
       .catch((e) => { loading = null; count.textContent = 'Yüklenemedi: ' + e.message; });
     return loading;
@@ -128,7 +128,7 @@
     const s = matches[i];
     if (!s) return;
     paletteClose();
-    window.Noyan.setInput(`/${s.name} `);
+    window.Mina.setInput(`/${s.name} `);
   }
 
   input.addEventListener('input', () => { sel = 0; paletteUpdate(); });

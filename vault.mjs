@@ -4,8 +4,8 @@ import { execFile } from 'node:child_process';
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import path from 'node:path';
 
-// İsteğe bağlı bot panosu: NOYAN_BOT_DIR, export_payload.py içeren klasör.
-const BOT_DIR = process.env.NOYAN_BOT_DIR || '';
+// İsteğe bağlı bot panosu: MINA_BOT_DIR, export_payload.py içeren klasör.
+const BOT_DIR = process.env.MINA_BOT_DIR || '';
 
 const stripReminders = (s) => s.replace(/<system-reminder>[\s\S]*?<\/system-reminder>/g, '').trim();
 

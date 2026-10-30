@@ -1,5 +1,5 @@
 {
-  "name": "noyan-app",
+  "name": "mina-app",
   "version": "1.0.0",
   "description": "Desktop AI agent for an Obsidian second-brain vault, built on the Claude Agent SDK",
   "main": "main.mjs",

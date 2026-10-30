@@ -128,7 +128,7 @@ function permCard(ev) {
   if (ev.name === 'AskUserQuestion') {
     const answers = {};
     const qs = ev.input.questions ?? [];
-    card.innerHTML = `<div class="card-h">❓ Noyan soruyor</div>` + qs.map((q, qi) =>
+    card.innerHTML = `<div class="card-h">❓ Mina soruyor</div>` + qs.map((q, qi) =>
       `<div class="q">${esc(q.question)}</div><div class="row">${q.options.map((o, oi) =>
         `<button class="opt" data-q="${qi}" data-o="${oi}" title="${esc(o.description ?? '')}">${esc(o.label)}</button>`).join('')}</div>`
     ).join('') + `<div class="row end"><button class="primary" data-act="send">Cevapla</button><button class="ghost" data-act="deny">Geç</button></div>`;
@@ -147,7 +147,7 @@ function permCard(ev) {
     card.onclick = (e) => { const c = e.target.closest('button')?.dataset.c; if (c) finish(c); };
   }
   function finish(choice, answers) {
-    window.noyan.perm({ id: ev.id, choice, answers });
+    window.mina.perm({ id: ev.id, choice, answers });
     card.classList.add('done');
     card.onclick = null;
     card.querySelectorAll('button').forEach((b) => (b.disabled = true));
@@ -159,12 +159,12 @@ function permCard(ev) {
 }
 
 // ---- Olaylar ----
-window.noyan.on((ev) => {
+window.mina.on((ev) => {
   switch (ev.kind) {
     case 'init':
       apiKey = ev.apiKey;
       $('meta').textContent = `${ev.model} · ${ev.mode ?? ''}`;
-      window.dispatchEvent(new CustomEvent('noyan:init', { detail: ev }));
+      window.dispatchEvent(new CustomEvent('mina:init', { detail: ev }));
       break;
     case 'thinking':
       if (busy) orb('thinking');
@@ -197,7 +197,7 @@ window.noyan.on((ev) => {
       setBusy(false);
       if (ev.error) add('msg error', esc(ev.error));
       $('usage').textContent = `${(ev.ms / 1000).toFixed(1)} sn${apiKey && ev.cost ? ` · $${ev.cost.toFixed(3)}` : ''}`;
-      window.dispatchEvent(new Event('noyan:done'));
+      window.dispatchEvent(new Event('mina:done'));
       break;
     case 'error':
       endText();
@@ -210,7 +210,7 @@ window.noyan.on((ev) => {
     case 'reset':
       clearChat('Yeni oturum.', 'Temiz sayfa.');
       $('sessTitle').textContent = 'yeni oturum';
-      window.dispatchEvent(new Event('noyan:done'));
+      window.dispatchEvent(new Event('mina:done'));
       break;
   }
 });
@@ -262,7 +262,7 @@ function renderAttachments() {
 $('attachments').onclick = (e) => { const i = e.target.closest('button')?.dataset.i; if (i != null) { attachments.splice(i, 1); renderAttachments(); } };
 
 function addFile(file) {
-  const p = window.noyan.pathFor(file);
+  const p = window.mina.pathFor(file);
   if (p) {
     const isImg = file.type.startsWith('image/');
     attachments.push({ kind: 'file', name: file.name, path: p, thumb: null });
@@ -316,7 +316,7 @@ function submit() {
   }
   if ($('sessTitle').textContent === 'yeni oturum' && text) $('sessTitle').textContent = text.slice(0, 50);
   scroll(true);
-  window.noyan.send({
+  window.mina.send({
     text,
     images: attachments.filter((a) => a.kind === 'image').map(({ mediaType, data }) => ({ mediaType, data })),
     files: attachments.filter((a) => a.kind === 'file').map((a) => a.path),
@@ -342,28 +342,28 @@ input.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); submit(); }
 });
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && busy) window.noyan.interrupt();
-  if (e.ctrlKey && e.key.toLowerCase() === 'n') { e.preventDefault(); window.noyan.reset(); }
+  if (e.key === 'Escape' && busy) window.mina.interrupt();
+  if (e.ctrlKey && e.key.toLowerCase() === 'n') { e.preventDefault(); window.mina.reset(); }
   if (e.ctrlKey && e.key.toLowerCase() === 'b') { e.preventDefault(); document.body.classList.toggle('no-side'); }
   if (e.ctrlKey && e.key.toLowerCase() === 'j') { e.preventDefault(); document.body.classList.toggle('no-right'); }
 });
 $('go').onclick = submit;
-$('stop').onclick = () => window.noyan.interrupt();
-$('new').onclick = () => window.noyan.reset();
-$('vault').onclick = () => window.noyan.openVault();
+$('stop').onclick = () => window.mina.interrupt();
+$('new').onclick = () => window.mina.reset();
+$('vault').onclick = () => window.mina.openVault();
 $('toggleSide').onclick = () => document.body.classList.toggle('no-side');
 $('toggleRight').onclick = () => document.body.classList.toggle('no-right');
 
 // ---- Model / izin modu ----
-$('modelSel').onchange = (e) => window.noyan.setModel(e.target.value);
-$('modeSel').onchange = (e) => window.noyan.setMode(e.target.value);
-const prefs = window.noyan.settings();
+$('modelSel').onchange = (e) => window.mina.setModel(e.target.value);
+$('modeSel').onchange = (e) => window.mina.setMode(e.target.value);
+const prefs = window.mina.settings();
 prefs.then((s) => { $('modeSel').value = s.mode; });
-Promise.all([window.noyan.models(), prefs]).then(([list, s]) => {
+Promise.all([window.mina.models(), prefs]).then(([list, s]) => {
   $('modelSel').innerHTML = `<option value="">Model: varsayılan</option>` +
     list.map((m) => `<option value="${esc(m.value)}" title="${esc(m.description)}">${esc(m.name)}</option>`).join('');
   $('modelSel').value = s.model;
 }).catch(() => {});
 
 orb('idle');
-window.Noyan = { setInput, renderHistory, clearChat };
+window.Mina = { setInput, renderHistory, clearChat };

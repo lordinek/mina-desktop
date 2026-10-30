@@ -1,6 +1,6 @@
 const { contextBridge, ipcRenderer, webUtils } = require('electron');
 
-contextBridge.exposeInMainWorld('noyan', {
+contextBridge.exposeInMainWorld('mina', {
   send: (msg) => ipcRenderer.send('send', msg),
   interrupt: () => ipcRenderer.send('interrupt'),
   reset: () => ipcRenderer.send('new'),

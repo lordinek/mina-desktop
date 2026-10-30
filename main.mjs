@@ -1,4 +1,4 @@
-// Noyan: AliOS vault'unda çalışan Claude Code oturumunu masaüstü penceresinde sunar.
+// Mina: AliOS vault'unda çalışan Claude Code oturumunu masaüstü penceresinde sunar.
 import { app, BrowserWindow, Menu, Notification, Tray, globalShortcut, ipcMain, nativeImage, shell } from 'electron';
 import { query } from '@anthropic-ai/claude-agent-sdk';
 import { randomUUID } from 'node:crypto';
@@ -10,8 +10,8 @@ import { enrichSkills } from './skills.mjs';
 import * as vaultData from './vault.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-// Vault yolu: NOYAN_VAULT ortam değişkeni, yoksa ~/Vault.
-const VAULT = process.env.NOYAN_VAULT || path.join(os.homedir(), 'Vault');
+// Vault yolu: MINA_VAULT ortam değişkeni, yoksa ~/Vault.
+const VAULT = process.env.MINA_VAULT || path.join(os.homedir(), 'Vault');
 const CLAUDE_EXE = path.join(os.homedir(), '.local', 'bin', 'claude.exe');
 const HOTKEY = 'Control+Alt+N';
 const IMAGE_TYPES = { '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.gif': 'image/gif', '.webp': 'image/webp' };
@@ -147,7 +147,7 @@ function handle(m) {
       break;
     case 'result':
       send({ kind: 'done', cost: m.total_cost_usd, ms: m.duration_ms, error: m.is_error ? (m.result ?? m.subtype) : null });
-      notify('Noyan bitirdi', typeof m.result === 'string' ? m.result.slice(0, 140) : 'Cevap hazır');
+      notify('Mina bitirdi', typeof m.result === 'string' ? m.result.slice(0, 140) : 'Cevap hazır');
       break;
   }
 }
@@ -241,7 +241,7 @@ function createWindow() {
     height: 900,
     minWidth: 760,
     minHeight: 520,
-    title: 'Noyan',
+    title: 'Mina',
     icon: path.join(__dirname, 'icon.ico'),
     backgroundColor: '#00000000',
     backgroundMaterial: 'acrylic',
@@ -264,9 +264,9 @@ function createWindow() {
 
 function createTray() {
   tray = new Tray(nativeImage.createFromPath(path.join(__dirname, 'icon.ico')));
-  tray.setToolTip(`Noyan (${HOTKEY.replace('Control', 'Ctrl')})`);
+  tray.setToolTip(`Mina (${HOTKEY.replace('Control', 'Ctrl')})`);
   tray.setContextMenu(Menu.buildFromTemplate([
-    { label: 'Noyan\'ı aç', click: showWindow },
+    { label: 'Mina\'yı aç', click: showWindow },
     { label: 'Yeni oturum', click: () => { showWindow(); stop(); sessionId = ''; send({ kind: 'reset' }); } },
     { type: 'separator' },
     { label: 'Çık', click: () => { quitting = true; app.quit(); } },
@@ -277,7 +277,7 @@ function createTray() {
 if (!app.requestSingleInstanceLock()) app.quit();
 app.on('second-instance', showWindow);
 
-app.setAppUserModelId('com.ali.noyan');
+app.setAppUserModelId('com.ali.mina');
 app.whenReady().then(() => {
   const saved = loadSettings();
   model = saved.model || undefined;

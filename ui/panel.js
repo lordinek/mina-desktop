@@ -37,7 +37,7 @@
 
   async function loadBots() {
     $('botsRefresh').classList.add('spinning');
-    const d = await window.noyan.bots();
+    const d = await window.mina.bots();
     $('botsRefresh').classList.remove('spinning');
     if (d.error) { $('bots').innerHTML = `<div class="muted">${esc(d.error)}</div>`; return; }
     const p = d.portfolio;

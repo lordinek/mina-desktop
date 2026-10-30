@@ -6,9 +6,9 @@
   let current = '';
 
   const loaders = {
-    sessions: () => window.noyan.sessions(),
-    threads: () => window.noyan.threads(),
-    projects: () => window.noyan.projects(),
+    sessions: () => window.mina.sessions(),
+    threads: () => window.mina.threads(),
+    projects: () => window.mina.projects(),
   };
 
   async function refresh(which = tab) {
@@ -61,18 +61,18 @@
       const s = data.sessions.find((x) => x.id === b.dataset.id);
       current = s.id;
       render();
-      try { window.Noyan.renderHistory(await window.noyan.resume(s.id), s.title); }
-      catch (err) { window.Noyan.clearChat('Oturum açılamadı', String(err.message ?? err)); }
+      try { window.Mina.renderHistory(await window.mina.resume(s.id), s.title); }
+      catch (err) { window.Mina.clearChat('Oturum açılamadı', String(err.message ?? err)); }
     } else if (b.dataset.i != null) {
       const t = data.threads[b.dataset.i];
-      window.Noyan.setInput(`"${t.title}" thread'ine devam edelim. Durum ne, sıradaki adım ne?`);
+      window.Mina.setInput(`"${t.title}" thread'ine devam edelim. Durum ne, sıradaki adım ne?`);
     } else if (b.dataset.rel) {
-      window.noyan.openObsidian(b.dataset.rel);
+      window.mina.openObsidian(b.dataset.rel);
     }
   };
 
-  window.addEventListener('noyan:init', (e) => { current = e.detail.sessionId; });
-  window.addEventListener('noyan:done', () => { refresh('sessions'); if (tab !== 'sessions') refresh(tab); });
+  window.addEventListener('mina:init', (e) => { current = e.detail.sessionId; });
+  window.addEventListener('mina:done', () => { refresh('sessions'); if (tab !== 'sessions') refresh(tab); });
 
   refresh('sessions');
   refresh('threads');
