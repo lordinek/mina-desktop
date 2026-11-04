@@ -43,7 +43,7 @@
     const p = d.portfolio;
     const pp = p.starting_balance ? (p.pnl / p.starting_balance) * 100 : 0;
     $('portfolio').innerHTML = `
-      <div class="pf-label">Toplam portföy (paper)</div>
+      <div class="pf-label">Toplam portföy</div>
       <div class="pf-val">$${money(p.equity)}</div>
       <div class="pf-pnl ${p.pnl >= 0 ? 'up' : 'down'}">${p.pnl >= 0 ? '▲' : '▼'} $${money(Math.abs(p.pnl))} · ${pct(pp)}</div>`;
     const sorted = [...d.bots].sort((a, b) => a.stopped - b.stopped || (b.pnlPct ?? 0) - (a.pnlPct ?? 0));
